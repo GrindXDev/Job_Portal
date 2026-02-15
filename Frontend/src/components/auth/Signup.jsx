@@ -34,7 +34,7 @@ const Signup = () => {
     const file = e.target.files?.[0];
 
     if (file) {
-      // Validate file size (10MB max)
+      
       const maxSize = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSize) {
         toast.error(`File too large (${(file.size / 1024 / 1024).toFixed(2)}MB). Max size: 10MB`);
@@ -108,10 +108,7 @@ const Signup = () => {
       dispatch(setLoading(true));
       dispatch(clearError());
 
-      const res = await axios.post(
-        `${USER_API_END_POINT}/register`,
-        formData,
-        {
+      const res = await axios.post(`${ USER_API_END_POINT }/register`,formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
