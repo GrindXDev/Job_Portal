@@ -1,0 +1,27 @@
+notepad .gitignore
+```
+
+### 3. **Paste this content and save:**
+```
+# Dependencies
+node_modules/
+Backend/node_modules/
+Frontend/node_modules/
+
+# Environment variables
+.env
+Backend/.env
+Frontend/.env
+
+# Build output
+dist/
+Frontend/dist/
+Backend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
