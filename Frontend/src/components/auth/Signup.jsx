@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
@@ -108,7 +108,7 @@ const Signup = () => {
       dispatch(setLoading(true));
       dispatch(clearError());
 
-      const res = await axios.post(`${ USER_API_END_POINT }/register`,formData, {
+      const res = await axios.post(`${USER_API_END_POINT}/register`,formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },

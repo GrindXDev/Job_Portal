@@ -16,7 +16,7 @@ const _dirname = path.resolve();
 
 // cors configuration
 const corsOptions = {
-    origin:"https://job-portal-9iiv.onrender.com",
+    origin:["http://localhost:5173", "https://job-portal-9iiv.onrender.com"],
     credentials:true
 }
 app.use(cors(corsOptions));
@@ -37,7 +37,7 @@ app.use("/api/v1/application", applicationRoute);
 
 app.use(express.static(path.join(_dirname, "/Frontend/dist")));
 
-app.get((req, res) => {
+app.use((req, res) => {
     res.sendFile(path.resolve(_dirname, "Frontend", "dist", "index.html"));
 });
 
