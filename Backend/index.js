@@ -37,12 +37,12 @@ app.use("/api/v1/application", applicationRoute);
 
 app.use(express.static(path.join(_dirname, "/Frontend/dist")));
 
-app.use((req, res) => {
+app.get("/{*path}", (req, res) => {
     res.sendFile(path.resolve(_dirname, "Frontend", "dist", "index.html"));
 });
 
+connectDB();
 app.listen(PORT, ()=>{
-    connectDB();
     console.log(`server running at port ${PORT}`);
 });
 

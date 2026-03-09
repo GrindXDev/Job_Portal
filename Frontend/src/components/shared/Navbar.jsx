@@ -31,24 +31,34 @@ const Navbar = () => {
     };
 
     return (
-        <div className='bg-white'>
-            <div className='flex items-center justify-between mx-auto max-w-7xl h-16'>
+        <div className='sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm'>
+            <div className='flex items-center justify-between mx-auto max-w-7xl h-16 px-4'>
                 <div>
-                    <h1 className='text-2xl font-bold'>Job<span className='text-[#F83002]'>Portal</span></h1>
+                    <h1 className='text-2xl font-bold tracking-tight'>Job<span className='text-[#F83002]'>Portal</span></h1>
                 </div>
-                <div className='flex items-center gap-12'>
-                    <ul className='flex font-medium items-center gap-5 cursor-pointer'>
+                <div className='flex items-center gap-10'>
+                    <ul className='flex font-medium items-center gap-1 cursor-pointer'>
                         {
                             user && user.role === 'recruiter' ? (
                                 <>
-                                    <li><Link to='/admin/companies'>Companies</Link></li>
-                                    <li><Link to='/admin/jobs'>Jobs</Link></li>
+                                    <li><Link to='/admin/companies'
+                                    className='px-4 py-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 text-md'>
+                                    Companies</Link></li>
+                                    <li><Link to='/admin/jobs'
+                                    className='px-4 py-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 text-md'>
+                                    Jobs</Link></li>
                                 </>
                             ) : (
                                 <>
-                                    <li><Link to='/'>Home</Link></li>
-                                    <li><Link to='/jobs'>Jobs</Link></li>
-                                    <li><Link to='/browse'>Browse</Link></li>
+                                    <li><Link to='/'
+                                        className='px-4 py-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 text-md'>
+                                        Home</Link></li>
+                                    <li><Link to='/jobs'
+                                        className='px-4 py-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 text-md'>
+                                        Jobs</Link></li>
+                                    <li><Link to='/browse'
+                                        className='px-4 py-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 text-md'>
+                                        Browse</Link></li>
                                 </>
                             )
                         }
