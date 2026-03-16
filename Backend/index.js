@@ -16,7 +16,7 @@ const _dirname = path.resolve();
 
 // cors configuration
 const corsOptions = {
-    origin:["http://localhost:5173", "https://job-portal-9iiv.onrender.com"],
+    origin:["https://job-portal-9iiv.onrender.com"],
     credentials:true
 }
 app.use(cors(corsOptions));
