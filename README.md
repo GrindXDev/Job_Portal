@@ -71,18 +71,6 @@ Job-Portal/
 - Password Hashing using bcrypt
 - Role-Based Access (Student & Recruiter)
 
-## 📸 Screenshots
-
-Add screenshots of:
-- Home Page
-- Login Page
-- Browse Jobs
-- Job Details
-- Profile Page
-- Recruiter Dashboard
-- Company Management
-- Post Job Page
-
 ## ⚙️ Installation
 
 ### Clone Repository
