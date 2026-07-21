@@ -95,17 +95,6 @@ npm install
 npm run dev
 ```
 
-## 🌐 Environment Variables
-
-Create a `.env` file in the backend folder.
-
-```env
-PORT=8000
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret_key
-NODE_ENV=development
-```
-
 ## 🚀 Future Improvements
 
 - Email Notifications
