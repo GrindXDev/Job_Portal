@@ -125,5 +125,5 @@ This project helped me gain hands-on experience with:
 
 **Pritam Majumdar**
 
-- GitHub:https://github.com/GrindXDev
+- LeetCode: https://leetcode.com/u/PRITAM_109/
 - LinkedIn: https://www.linkedin.com/in/pritam-majumdar-8479113b5/
