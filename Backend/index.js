@@ -16,7 +16,7 @@ const _dirname = path.resolve();
 
 // cors configuration
 const corsOptions = {
-    origin:["https://job-portal-phi-five-62.vercel.app/"],
+    origin:["https://job-portal-phi-five-62.vercel.app"],
     credentials:true
 }
 app.use(cors(corsOptions));
