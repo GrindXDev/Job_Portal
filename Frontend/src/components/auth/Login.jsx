@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
-import { RadioGroup, RadioGroupItem} from '../ui/radio-group'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Button } from '../ui/button'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -12,40 +12,57 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setLoading, setUser } from '@/redux/authSlice'
 import { Loader2 } from 'lucide-react'
 
-
 const Login = () => {
+
   const [input, setInput] = useState({
     email: "",
     password: "",
     role: ""
   });
 
-  const {loading, user} = useSelector(store=>store.auth);
+  const { loading, user } = useSelector(store => store.auth);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  }
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleRoleChanger = (value) => {
-      setInput({...input, role: value});
-  }
+    setInput({
+      ...input,
+      role: value
+    });
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if(!input.email || !input.email.trim()){
-      toast.error("please enter your email");
+    // Email validation
+    if (!input.email.trim()) {
+      toast.error("Please enter your email");
       return;
     }
 
-    if(!input.password || !input.password.trim()){
-      toast.error("please enter your password");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(input.email)) {
+      toast.error("Please enter a valid email address");
       return;
     }
 
-    if(!input.role) {
+    // Password validation
+    if (!input.password.trim()) {
+      toast.error("Please enter your password");
+      return;
+    }
+
+    // Role validation
+    if (!input.role) {
       toast.error("Please select a role");
       return;
     }
@@ -53,39 +70,70 @@ const Login = () => {
     try {
       dispatch(setLoading(true));
 
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-        headers: {
-          "Content-Type": "application/json"
+      const res = await axios.post(
+        `${USER_API_END_POINT}/login`,
+        {
+          email: input.email.trim(),
+          password: input.password,
+          role: input.role
         },
-        withCredentials: true,
-      });
+        {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          withCredentials: true
+        }
+      );
+
       if (res.data.success) {
+
+        // Save authenticated user in Redux
         dispatch(setUser(res.data.user));
-        navigate("/");
+
         toast.success(res.data.message);
+
+        // Redirect to dashboard/home
+        navigate("/");
       }
+
     } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || "login failed");
-    } finally{
+      console.error("Login error:", error);
+      toast.error(
+        error.response?.data?.message ||
+        "Login failed"
+      );
+
+    } finally {
       dispatch(setLoading(false));
     }
-  }
+  };
+
+  // Already authenticated user should not see login page
   useEffect(() => {
-    if(user){
+
+    if (user) {
       navigate("/");
     }
-  },[user, navigate]);
+  }, [user, navigate]);
 
   return (
     <div>
       <Navbar />
+
       <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form onSubmit={submitHandler} className="w-1/2  border  border-gray-200 rounded-md p-4 my-10">
-          <h1 className="font-bold text-xl mb-5">Login</h1>
+        <form
+          onSubmit={submitHandler}
+          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
+        >
+
+          <h1 className="font-bold text-xl mb-5">
+            Login
+          </h1>
+
+          {/* Email */}
 
           <div className="my-2">
-            <Label >Email</Label>
+            <Label>Email</Label>
             <Input
               type="email"
               value={input.email}
@@ -95,8 +143,11 @@ const Login = () => {
             />
           </div>
 
+          {/* Password */}
+
           <div className="my-2">
-            <Label >Password</Label>
+            <Label>Password</Label>
+
             <Input
               type="password"
               value={input.password}
@@ -105,37 +156,86 @@ const Login = () => {
               placeholder="*****"
             />
           </div>
+
+          {/* Role */}
+
           <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center gap-4 my-5" value={input.role} onValueChange={handleRoleChanger}>
+
+            <RadioGroup
+              className="flex items-center gap-4 my-5"
+              value={input.role}
+              onValueChange={handleRoleChanger}
+            >
+
               <div className="flex items-center space-x-2 cursor-pointer">
-                
-                <RadioGroupItem value="student" id="student" />
-                <Label htmlFor="student">Student</Label>
+                <RadioGroupItem
+                  value="student"
+                  id="student"
+                />
+
+                <Label
+                  htmlFor="student"
+                  className="cursor-pointer"
+                >
+                  Student
+                </Label>
               </div>
+
               <div className="flex items-center space-x-2 cursor-pointer">
-                {/* < RadioGroupItem 
-                  type="radio"
-                  name="role"
+                <RadioGroupItem
                   value="recruiter"
-                  checked={input.role === 'recruiter'}
-                  onChange={changeEventHandler}
-                  
-                /> */}
-                <RadioGroupItem value="recruiter" id="recruiter" />
-                <Label htmlFor="recruiter">Recruiter</Label>
+                  id="recruiter"
+                />
+
+                <Label
+                  htmlFor="recruiter"
+                  className="cursor-pointer"
+                >
+                  Recruiter
+                </Label>
               </div>
             </RadioGroup>
           </div>
+
+          {/* Login button */}
+
           {
-            loading ? <Button className="w-full my-4"> <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Please Wait</Button> :<Button type="submit" className="w-full my-4">Login</Button>
+            loading ? (
+
+              <Button
+                type="button"
+                disabled
+                className="w-full my-4"
+              >
+
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please Wait
+              </Button>
+
+            ) : (
+
+              <Button
+                type="submit"
+                className="w-full my-4"
+              >
+                Login
+              </Button>
+            )
           }
-          
-          <span className='text-sm'>Don't have an account? <Link to="/signup" className="text-blue-600">Signup</Link></span>
+
+          <span className="text-sm">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="text-blue-600"
+            >
+              Signup
+            </Link>
+          </span>
         </form>
       </div>
     </div>
+  );
+};
 
-  )
-}
-
-export default Login
+export default Login;
