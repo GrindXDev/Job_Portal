@@ -209,24 +209,23 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        return res
-            .status(200)
-            .cookie("token", "", {
-                maxAge: 0,
-                httpOnly: true,
-                secure: true,
-                sameSite: "none"
-            })
-            .json({
-                message: "Logged out successfully.",
-                success: true
-            });
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        });
+
+        return res.status(200).json({
+            message: "Logged out successfully.",
+            success: true
+        });
+
     } catch (error) {
         console.log(error);
+
         return res.status(500).json({
             message: "Server error during logout",
-            success: false,
-            error: error.message
+            success: false
         });
     }
 };
