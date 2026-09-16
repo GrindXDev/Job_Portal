@@ -76,9 +76,8 @@ export const getAllJobs = async (req, res) => {
         // Always return 200
         return res.status(200).json({
             success: true,
-            jobs: jobs   // empty array is OK
+            jobs: jobs 
         });
-
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -95,6 +94,7 @@ export const getJobById = async (req,res) => {
         const job = await Job.findById(jobId).populate({
             path: "applications"
         });
+        
         if(!job){
             return res.status(404).json({
                 message:"Job not found.",
@@ -129,7 +129,6 @@ export const getAdminJobs = async (req,res) => {
                 message:"Jobs not found.",
                 success: false
             });
-            // NO .sort() here!
         };
 
         return res.status(200).json({

@@ -16,11 +16,10 @@ const _dirname = path.resolve();
 
 // cors configuration
 const corsOptions = {
-    origin:["https://job-portal-9iiv.onrender.com"],
+    origin:["https://job-portal-phi-five-62.vercel.app/"],
     credentials:true
 }
 app.use(cors(corsOptions));
-
 
 // Middleware
 app.use(express.json());
@@ -45,9 +44,3 @@ connectDB();
 app.listen(PORT, ()=>{
     console.log(`server running at port ${PORT}`);
 });
-
-
-
-
-
-
