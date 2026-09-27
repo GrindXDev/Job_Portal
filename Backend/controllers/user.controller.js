@@ -54,7 +54,6 @@ export const register = async (req, res) => {
             phoneNumber,
             password: hashedPassword,
             role,
-
             profile: {
                 profilePhoto: cloudResponse?.secure_url || ""
             }
@@ -99,9 +98,7 @@ export const register = async (req, res) => {
             });
 
     } catch (error) {
-
         console.log(error);
-
         return res.status(500).json({
             message: "Server error during registration",
             success: false,
@@ -202,6 +199,87 @@ export const login = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             message: "Server error during login",
+            success: false
+        });
+    }
+};
+
+export const updateProfile = async (req, res) => {
+    try {
+        const {
+            fullname,
+            email,
+            phoneNumber,
+            bio,
+            skills
+        } = req.body;
+
+        const userId = req.id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found.",
+                success: false
+            });
+        }
+
+        if (fullname) {
+            user.fullname = fullname;
+        }
+
+        if (email) {
+            user.email = email;
+        }
+
+        if (phoneNumber) {
+            user.phoneNumber = phoneNumber;
+        }
+
+        if (bio) {
+            user.profile.bio = bio;
+        }
+
+        if (skills) {
+            user.profile.skills = Array.isArray(skills)
+                ? skills
+                : skills.split(",").map(skill => skill.trim());
+        }
+
+        // Update profile photo if a new file is uploaded
+        if (req.file) {
+            const fileUri = getDataUri(req.file);
+
+            const cloudResponse = await cloudinary.uploader.upload(
+                fileUri.content
+            );
+
+            user.profile.profilePhoto = cloudResponse.secure_url;
+        }
+
+        await user.save();
+
+        const safeUser = {
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+            profile: user.profile
+        };
+
+        return res.status(200).json({
+            message: "Profile updated successfully.",
+            user: safeUser,
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Server error during profile update.",
             success: false
         });
     }
